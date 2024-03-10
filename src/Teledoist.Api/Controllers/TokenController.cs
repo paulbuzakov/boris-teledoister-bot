@@ -3,17 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace Teledoist.Api.Controllers;
 
 [ApiController]
-[Route("api/teledoist/access_token")]
+[Route("api/teledoist")]
 public class AccessTokenController : ControllerBase
 {
-    public AccessTokenController() {
+    public AccessTokenController()
+    {
 
     }
 
-    [HttpPost]
-    public Task<IActionResult> Post([FromBody] string access_token, [FromBody] string )
+    [HttpPost("access_token")]
+    public IActionResult Post([FromBody] string access_token)
     {
-Console.WriteLine(Request.Content.R);
- return Ok();
+        Console.WriteLine(access_token);
+
+        return Ok();
     }
 }
