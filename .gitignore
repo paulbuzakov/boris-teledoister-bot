@@ -1,3 +1,2 @@
-**/obj
-**/bin
+# MacOS's specific file
 **/.DS_Store
