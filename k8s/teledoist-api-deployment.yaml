@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: teledoist-api-deployment
+  labels:
+    app: teledoist-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: teledoist-api
+  template:
+    metadata:
+      labels:
+        app: teledoist-api
+    spec:
+      containers:
+      - name: teledoist-api
+        image: paulbuzakov/teledoist-api:latest
+        ports:
+        - containerPort: 80
