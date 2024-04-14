@@ -4,6 +4,7 @@ metadata:
   name: teledoist-blog-deployment
   labels:
     app: teledoist-blog
+    app.kubernetes.io/name: teledoist-blog
 spec:
   replicas: 2
   selector:
@@ -18,43 +19,4 @@ spec:
       - name: teledoist-blog
         image: paulbuzakov/teledoist-blog:latest
         ports:
-        - containerPort: 8080
-
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: teledoist-blog
-# spec:
-#   selector:
-#     app: teledoist-blog
-#   type: ClusterIP
-#   ports:
-#     - name: teledoist-blog
-#       protocol: TCP
-#       port: 8080
-#       targetPort: 80
-
-# ---
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: teledoist-blog
-#   annotations:
-#     cert-manager.io/cluster-issuer: lets-encrypt
-# spec:
-#   tls:
-#     - hosts:
-#         - teledoist.paulbuzakov.com
-#       secretName: teledoist-blog-ingress-tls
-#   rules:
-#     - host: teledoist.paulbuzakov.com
-#       http:
-#         paths:
-#           - backend:
-#               service:
-#                 name: teledoist-blog
-#                 port:
-#                   number: 80
-#             path: /
-#             pathType: Exact
+        - containerPort: 80
