@@ -1,54 +1,67 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: teledoist-api-deployment
+  name: teledoist-api
+  labels:
+    app: teledoist-api
 spec:
-  replicas: 5
   selector:
     matchLabels:
       app: teledoist-api
+  replicas: 2
   template:
     metadata:
-      name: my-teledoist-api
+      annotations:
+        kubectl.kubernetes.io/default-container: teledoist-api
       labels:
-        env: prod
         app: teledoist-api
     spec:
       containers:
         - name: teledoist-api
-          image: paulbuzakov/teledoist-api:0.0.1
+          image: paulbuzakov/teledoist-api:latest
           imagePullPolicy: Always
+          command:
+            - /bin/sh
+            - "-c"
+            - "sleep 60m"
           ports:
             - containerPort: 80
-              name: http-web-api
-          resources:
-            requests:
-              cpu: 100m
-              memory: 100Mi
-            limits:
-              cpu: 200m
-              memory: 200Mi
-          env:
-            - name: ASPNETCORE_URLS
-              value: http://+:80
+              name: teledoist-api
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: teledoist-api
+#spec:
+#  selector:
+#    app: teledoist-api
+#  type: ClusterIP
+#  ports:
+#    - name: teledoist-api
+#      protocol: TCP
+#port: 80
+#targetPort: 80
 
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: teledoist-api-lb-service
-spec:
-  selector:
-    app: teledoist-api
-  type: ClusterIP
-  ports:
-    - name: teledoist-api-port
-      protocol: TCP
-      port: 35000
-      targetPort: 80
-      nodePort: 35000
-  type: LoadBalancer
-
----
-
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: teledoist-api
+#annotations:
+#  cert-manager.io/cluster-issuer: lets-encrypt
+#spec:
+#  tls:
+#  - hosts:
+#        - teledoist.paulbuzakov.com
+#      secretName: teledoist-api-ingress-tls
+#rules:
+#    - host: teledoist.paulbuzakov.com
+#      http:
+#  paths:
+#          - backend:
+#              service:
+#                name: teledoist-api
+#                port:
+#                  number: 80
+#            path: /api
+#            pathType: Exact
