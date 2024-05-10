@@ -1,6 +1,11 @@
 # MacOS's specific file
 **/.DS_Store
+
+# Visual Studio Code's specific folder
 **/.vscode
+
+# Rider's specific folder
+**/.idea
 
 # Build files
 **/obj
